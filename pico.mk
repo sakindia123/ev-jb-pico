@@ -232,9 +232,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.vold.umsdirtyratio=20
 
 # Make clean 
-PRODUCT_NAME := pico
+PRODUCT_NAME := htc_pico
 PRODUCT_DEVICE := pico
-PRODUCT_MODEL := HTC Explorer A310
+PRODUCT_MODEL := Full Android on Pico
 PRODUCT_BRAND := htc_europe
    
 # Inherit mdpi  
