@@ -15,6 +15,9 @@
 
 USE_CAMERA_STUB := true
 
+TARGET_GLOBAL_CFLAGS += -mfpu=neon -mfloat-abi=softfp
+TARGET_GLOBAL_CPPFLAGS += -mfpu=neon -mfloat-abi=softfp
+
 # Jb Libhwcomposer
 TARGET_NO_HW_VSYNC := true
 BOARD_NEEDS_MEMORYHEAPPMEM := true
@@ -94,16 +97,20 @@ BOARD_USES_QCOM_LIBRPC := true
 BOARD_USES_QCOM_LIBS := true
 TARGET_GRALLOC_USES_ASHMEM := true
 
-# Wifi related defines
-BOARD_WPA_SUPPLICANT_DRIVER := WEXT
+# Wifi related definitions
+BOARD_WPA_SUPPLICANT_DRIVER := NL80211
 WPA_SUPPLICANT_VERSION := VER_0_8_X
-BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_wext
-BOARD_WLAN_DEVICE := bcm4330
-WIFI_DRIVER_MODULE_PATH := "/system/lib/modules/bcm4330.ko"
-WIFI_DRIVER_FW_PATH_STA := "/system/etc/firmware/fw_bcm4330b2.bin"
-WIFI_DRIVER_FW_PATH_AP := "/system/etc/firmware/fw_bcm4330b2_apsta.bin"
-WIFI_DRIVER_MODULE_NAME := "bcm4330"
-WIFI_DRIVER_MODULE_ARG := "firmware_path=/system/etc/firmware/fw_bcm4330b2.bin nvram_path=/proc/calibration iface_name=eth0"
+BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_bcmdhd
+BOARD_HOSTAPD_DRIVER        := NL80211
+BOARD_HOSTAPD_PRIVATE_LIB   := lib_driver_cmd_bcmdhd
+BOARD_WLAN_DEVICE           := bcmdhd
+WIFI_DRIVER_FW_PATH_PARAM := "/sys/module/bcmdhd/parameters/firmware_path"
+WIFI_DRIVER_MODULE_PATH := "/system/lib/modules/bcmdhd.ko"
+WIFI_DRIVER_FW_PATH_STA := "/system/etc/firmware/fw_bcm4330_b2.bin"
+WIFI_DRIVER_FW_PATH_AP := "/system/etc/firmware/fw_bcm4330_apsta_b2.bin"
+WIFI_DRIVER_FW_PATH_P2P := "/system/etc/firmware/fw_bcm4330_p2p_b2.bin"
+WIFI_DRIVER_MODULE_NAME := "bcmdhd"
+WIFI_DRIVER_MODULE_ARG := "firmware_path=/system/etc/firmware/fw_bcm4330_b2.bin nvram_path=/proc/calibration iface_name=eth0 dhd_watchdog_ms=10 dhd_poll=1"
 
 # GPS
 BOARD_USES_QCOM_GPS := true
@@ -116,6 +123,12 @@ TARGET_USES_GENLOCK := true
 USE_OPENGL_RENDERER := true
 BOARD_ADRENO_DECIDE_TEXTURE_TARGET := true
 TARGET_FORCE_CPU_UPLOAD := true
+BOARD_AVOID_DRAW_TEXTURE_EXTENSION := true
+TARGET_USES_C2D_COMPOSITION := true
+TARGET_USES_SF_BYPASS := false
+TARGET_HAVE_BYPASS := false
+TARGET_USES_OVERLAY := false
+TARGET_QCOM_HDMI_OUT := false
 
 # Browser & ICS Stuff
 WITH_JIT := true
@@ -135,5 +148,5 @@ TARGET_BOOTANIMATION_TEXTURE_CACHE := true
 # Misc.
 TARGET_NO_INITLOGO := true
 
-# Touch screen compatibility for ICS
+# Touch screen compatibility for ICS/JB
 BOARD_USE_LEGACY_TOUCHSCREEN := true

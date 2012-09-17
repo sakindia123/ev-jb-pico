@@ -3,7 +3,7 @@
 /dev/kgsl-3d0             0666   root       root
 /dev/kgsl-2d0             0666   root       root
 /dev/kgsl-2d1             0666   root       root
-/dev/genlock              0666   system     graphics
+/dev/genlock              0666    root      root
 
 # these should not be world writable
 /dev/diag                 0660   radio      radio
@@ -64,6 +64,7 @@
 /dev/qmi2                 0640   radio      radio
 /dev/bus/usb/*            0660   root       usb
 /dev/usb_accessory        0660   root       usb
+/dev/rfkill               0660    root      wifi
 
 # CDMA radio interface MUX
 /dev/ts0710mux*           0640   radio      radio

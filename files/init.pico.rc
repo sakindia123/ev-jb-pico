@@ -42,11 +42,32 @@ on boot
     chown system system /sys/class/leds/lcd-backlight/brightness
 
     # Power Management
+    chown root system /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_frequencies
+    chown root system /sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors
+    chown root system /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq
+
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 122880
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 600000
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor ondemand
     write /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate 50000
     
+    # Enable low memory killer to check file pages
+    write /sys/module/lowmemorykiller/parameters/minfile 0,0,0,5120,5632,6144
+    write /sys/module/lowmemorykiller/parameters/check_filepages 1
+
+    # Usb tethering
+    chmod 0777 /sys/class/usb_composite/*  
+  
+    # Fix ipconfig for wifi
+    touch /data/misc/wifi/ipconfig.txt
+    chmod 0777 /data/misc/wifi/ipconfig.txt
+
+    # fix for entropy service and some other that failed
+    # Need for NET
+    chmod 755 /data/system/appwidgets.xml
+    chmod 755 /data/system/entropy.dat
+    chmod 755 /data/system/wallpaper_info.xml
+
     # performance tweaks for flash
     write /sys/block/mtdblock3/bdi/read_ahead_kb 4
     write /sys/block/mtdblock4/bdi/read_ahead_kb 4
@@ -68,24 +89,22 @@ service hciattach /system/bin/logwrapper /system/bin/brcm_patchram_plus -d --no2
     oneshot
 
 service wpa_supplicant /system/bin/wpa_supplicant \
-    -Dwext -ieth0 -c/data/misc/wifi/wpa_supplicant.conf
+    -Dnl80211 -ieth0 -e/data/misc/wifi/entropy.bin
 #   we will start as root and wpa_supplicant will switch to user wifi
-#   after setting up the capabilities required for WEXT
     class main
     socket wpa_eth0 dgram 660 wifi wifi
     disabled
     oneshot
 
-service dhcpcd_usb0 /system/bin/logwrapper /system/bin/dhcpcd usb0
-    user root
-    disabled
-    oneshot
-    
 service dhcpcd_eth0 /system/bin/dhcpcd -ABKL
     class main
     disabled
     oneshot
 
+service dhcpcd_bnep0 /system/bin/dhcpcd -ABKL
+    class main
+    disabled
+    oneshot
     
 service dhcpcd_p2p /system/bin/dhcpcd -aABKL
     class main
@@ -97,13 +116,17 @@ service iprenew_eth0 /system/bin/dhcpcd -n
     disabled
     oneshot
 
-    
+service iprenew_bnep0 /system/bin/dhcpcd -n
+   class main
+   disabled
+   oneshot
+
 service iprenew_p2p /system/bin/dhcpcd -n
     class main
     disabled
     oneshot
 
-    # bugreport is triggered by the KEY_VOLUMEUP and BTN_MOUSE keycodes
+# bugreport is triggered by the KEY_VOLUMEUP and BTN_MOUSE keycodes
 service bugreport /system/bin/dumpstate -d -v -o /sdcard/bugreports/bugreport
     class main
     disabled
