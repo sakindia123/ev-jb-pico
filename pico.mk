@@ -46,7 +46,7 @@ PRODUCT_PACKAGES += \
     sensors.msm7x27a \
     make_ext4fs \
     setup_fs \
-    gps.pico
+    gps.default
 
 # Camera
 PRODUCT_PACKAGES += \
