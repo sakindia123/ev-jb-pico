@@ -221,7 +221,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     debug.camcorder.disablemeta=1 \
     ro.com.google.locationfeatures=1 \
     ro.com.google.networklocation=1 \
-    ro.com.google.gmsversion=2.3_r6 \
+    ro.com.google.gmsversion=2.3_r7 \
     ro.setupwizard.enable_bypass=1 \
     dalvik.vm.lockprof.threshold=500 \
     dalvik.vm.dexopt-flags=m=y \
