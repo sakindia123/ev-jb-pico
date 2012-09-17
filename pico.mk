@@ -45,7 +45,8 @@ PRODUCT_PACKAGES += \
     lights.msm7x27a \
     sensors.msm7x27a \
     make_ext4fs \
-    setup_fs
+    setup_fs \
+    gps.pico
 
 # Camera
 PRODUCT_PACKAGES += \
@@ -175,10 +176,6 @@ PRODUCT_COPY_FILES += \
 # RIL
 PRODUCT_COPY_FILES += \
     vendor/htc/pico/proprietary/lib/libhtc_ril.so:system/lib/libhtc_ril.so \
-
-# GPS
-PRODUCT_COPY_FILES += \
-    device/htc/pico/prebuilt/lib/hw/gps.pico.so:system/lib/hw/gps.pico.so \
 
 # Audio DSP Profiles
 PRODUCT_COPY_FILES += \
