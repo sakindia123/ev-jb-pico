@@ -12,10 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
-
-DEVICE_PACKAGE_OVERLAYS += device/htc/pico/overlay
-
 # Video decoding
 PRODUCT_PACKAGES += \
     libstagefrighthw \
@@ -226,7 +222,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.telephony.call_ring.multiple=false \
     ro.vold.umsdirtyratio=20
 
-PRODUCT_NAME := cm_pico
+PRODUCT_NAME := ev_pico
 PRODUCT_BRAND := HTC
 PRODUCT_DEVICE := pico
 PRODUCT_MODEL := HTC Explorer A310e

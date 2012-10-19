@@ -1,5 +1,6 @@
 ## Specify phone tech before including full_phone
 $(call inherit-product, vendor/ev/config/gsm.mk)
+DEVICE_PACKAGE_OVERLAYS += device/htc/pico/overlay
 
 # Inherit some common Evervolv stuff.
 $(call inherit-product, vendor/ev/config/common_full_phone.mk)
