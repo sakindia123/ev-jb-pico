@@ -1,4 +1,6 @@
-evervolv-pico
-=============
+android_device_htc_pico_jb
+==========================
 
-Ev JB for Pico
+Evervolv jellybean device tree for htc pico 
+
+Work in progress

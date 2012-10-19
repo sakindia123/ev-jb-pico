@@ -15,29 +15,9 @@
 
 USE_CAMERA_STUB := true
 
-TARGET_GLOBAL_CFLAGS += -mfpu=neon -mfloat-abi=softfp
+TARGET_GLOBAL_CFLAGS   += -mfpu=neon -mfloat-abi=softfp
 TARGET_GLOBAL_CPPFLAGS += -mfpu=neon -mfloat-abi=softfp
-
-# Jb Libhwcomposer
-TARGET_NO_HW_VSYNC := true
-BOARD_NEEDS_MEMORYHEAPPMEM := true
-BOARD_USES_QCOM_AUDIO_SPEECH := true
-
-# Caf MSM7627a stuff
-TARGET_CPU_SMP := true
-TARGET_AVOID_DRAW_TEXTURE_EXTENSION := true
-TARGET_USES_16BPPSURFACE_FOR_OPAQUE := true
-BOARD_HAS_8BIT_BCHECC_SUPPORT := true
-BOARD_KERNEL_BCHECC_SPARESIZE := 160
-BOARD_HAVE_MXT224_CFG := true
-TARGET_HAVE_TSLIB := true
-MM_AUDIO_OMX_ADEC_EVRC_DISABLED := false
-MM_AUDIO_OMX_ADEC_QCELP13_DISABLED := false
-MM_AUDIO_FTM_DISABLED := false
-MM_AUDIO_MEASUREMENT_DISABLED := false
-BOARD_USES_QCNE := true
-PROTEUS_DEVICE_API := true
-MM_AUDIO_VOEM_DISABLED := false
+COMMON_GLOBAL_CFLAGS   += -DQCOM_HARDWARE -DREFRESH_RATE=65
 
 # Arch related defines
 TARGET_BOARD_PLATFORM := msm7x27a
@@ -61,19 +41,18 @@ BOARD_KERNEL_CMDLINE := no_console_suspend=1 console=null
 BOARD_KERNEL_BASE := 0x12c00000
 BOARD_PAGE_SIZE := 0x00000800
 
-# Additional libraries
+# Additional librarys
 TARGET_PROVIDES_LIBAUDIO := true
 
 # Fix this up by examining /proc/mtd on a running device
 BOARD_BOOTIMAGE_PARTITION_SIZE := 0x00400000
-BOARD_RECOVERYIMAGE_PARTITION_SIZE := 0x00500000
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 0x00600000  #kernel don't fit anymore in recovery!
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 0x0eb40000
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 0x09600000
 BOARD_FLASH_BLOCK_SIZE := 262144
 
 # Prebuilt kernel
 TARGET_PREBUILT_KERNEL := device/htc/pico/prebuilt/kernel
-#TARGET_KERNEL_CONFIG := htc_pico_defconfig
 
 # Vold
 BOARD_VOLD_MAX_PARTITIONS := 24
@@ -91,31 +70,39 @@ BOARD_HAVE_BLUETOOTH_BCM := true
 TARGET_SPECIFIC_HEADER_PATH := device/htc/pico/include
 
 # OpenGL drivers config file path
-BOARD_EGL_CFG := device/htc/pico/prebuilt/lib/egl/egl.cfg
+BOARD_EGL_CFG := vendor/htc/pico/proprietary/lib/egl/egl.cfg
 BOARD_USES_QCOM_HARDWARE := true
 BOARD_USES_QCOM_LIBRPC := true
 BOARD_USES_QCOM_LIBS := true
 TARGET_GRALLOC_USES_ASHMEM := true
 
-# Wifi related definitions
-BOARD_WPA_SUPPLICANT_DRIVER := NL80211
-WPA_SUPPLICANT_VERSION := VER_0_8_X
+# Wifi related defines
+BOARD_WPA_SUPPLICANT_DRIVER      := NL80211
+WPA_SUPPLICANT_VERSION           := VER_0_8_X
 BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_bcmdhd
-BOARD_HOSTAPD_DRIVER        := NL80211
-BOARD_HOSTAPD_PRIVATE_LIB   := lib_driver_cmd_bcmdhd
-BOARD_WLAN_DEVICE           := bcmdhd
-WIFI_DRIVER_FW_PATH_PARAM := "/sys/module/bcmdhd/parameters/firmware_path"
-WIFI_DRIVER_MODULE_PATH := "/system/lib/modules/bcmdhd.ko"
-WIFI_DRIVER_FW_PATH_STA := "/system/etc/firmware/fw_bcm4330_b2.bin"
-WIFI_DRIVER_FW_PATH_AP := "/system/etc/firmware/fw_bcm4330_apsta_b2.bin"
-WIFI_DRIVER_FW_PATH_P2P := "/system/etc/firmware/fw_bcm4330_p2p_b2.bin"
-WIFI_DRIVER_MODULE_NAME := "bcmdhd"
-WIFI_DRIVER_MODULE_ARG := "firmware_path=/system/etc/firmware/fw_bcm4330_b2.bin nvram_path=/proc/calibration iface_name=eth0 dhd_watchdog_ms=10 dhd_poll=1"
+BOARD_HOSTAPD_DRIVER             := NL80211
+BOARD_HOSTAPD_PRIVATE_LIB        := lib_driver_cmd_bcmdhd
+BOARD_WLAN_DEVICE                := bcmdhd
+WIFI_DRIVER_FW_PATH_PARAM        := "/sys/module/bcmdhd/parameters/firmware_path"
+WIFI_DRIVER_MODULE_PATH          := "/system/lib/modules/bcmdhd.ko"
+WIFI_DRIVER_FW_PATH_STA          := "/system/etc/firmware/fw_bcm4330_b2.bin"
+WIFI_DRIVER_FW_PATH_AP           := "/system/etc/firmware/fw_bcm4330_apsta_b2.bin"
+WIFI_DRIVER_FW_PATH_P2P          := "/system/etc/firmware/fw_bcm4330_p2p_b2.bin"
+WIFI_DRIVER_MODULE_NAME          := "bcmdhd"
+WIFI_DRIVER_MODULE_ARG           := "firmware_path=/system/etc/firmware/fw_bcm4330_b2.bin nvram_path=/proc/calibration iface_name=eth0"
+WIFI_BAND                        := 802_11_ABG
+
+# Releasetools
+TARGET_RELEASETOOLS_EXTENSIONS := device/htc/pico/releasetools
+TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := device/htc/pico/releasetools/ota_from_target_files
 
 # GPS
 BOARD_USES_QCOM_GPS := true
 BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := pico
 BOARD_VENDOR_QCOM_GPS_LOC_API_AMSS_VERSION := 50000
+
+# Misc
+TARGET_BOOTANIMATION_PRELOAD := true
 
 # Graphics
 BOARD_USE_SKIA_LCDTEXT := true
@@ -124,29 +111,49 @@ USE_OPENGL_RENDERER := true
 BOARD_ADRENO_DECIDE_TEXTURE_TARGET := true
 TARGET_FORCE_CPU_UPLOAD := true
 BOARD_AVOID_DRAW_TEXTURE_EXTENSION := true
-TARGET_USES_C2D_COMPOSITION := true
+TARGET_USES_C2D_COMPOSITION := false
 TARGET_USES_SF_BYPASS := false
 TARGET_HAVE_BYPASS := false
 TARGET_USES_OVERLAY := false
 TARGET_QCOM_HDMI_OUT := false
+TARGET_NO_HW_VSYNC := true
 
-# Browser & ICS Stuff
+# Caf 
+TARGET_CPU_SMP := true
+TARGET_AVOID_DRAW_TEXTURE_EXTENSION := true
+TARGET_USES_16BPPSURFACE_FOR_OPAQUE := true
+BOARD_HAS_8BIT_BCHECC_SUPPORT := true
+BOARD_KERNEL_BCHECC_SPARESIZE := 160
+BOARD_HAVE_MXT224_CFG := true
+TARGET_HAVE_TSLIB := true
+MM_AUDIO_OMX_ADEC_EVRC_DISABLED := false
+MM_AUDIO_OMX_ADEC_QCELP13_DISABLED := false
+MM_AUDIO_FTM_DISABLED := false
+MM_AUDIO_MEASUREMENT_DISABLED := false
+BOARD_USES_QCNE := true
+PROTEUS_DEVICE_API := true
+MM_AUDIO_VOEM_DISABLED := false
+TARGET_USES_PMEM := true
+BOARD_USES_QCOM_AUDIO_SPEECH := true
+
+# ICS Stuff
+BOARD_HAS_NO_SELECT_BUTTON := true
+
+# RIL
+BOARD_USES_LEGACY_RIL := true
+COMMON_GLOBAL_CFLAGS += -DRIL_VERSION_2_SUPPORT
+
+# Camera
+BOARD_NEEDS_MEMORYHEAPPMEM := true
+CAMERA_USES_SURFACEFLINGER_CLIENT_STUB := true
+COMMON_GLOBAL_CFLAGS += -DICS_CAMERA_BLOB
+
+# Add h/w acceleration in browser :)
+ENABLE_WEBGL := true
 WITH_JIT := true
 ENABLE_JSC_JIT := true
-HTTP := chrome
-BOARD_HAS_NO_SELECT_BUTTON := true
-TARGET_WEBKIT_USE_MORE_MEMORY := true
 JS_ENGINE := v8
-COMMON_GLOBAL_CFLAGS += -DQCOM_HARDWARE
-COMMON_GLOBAL_CFLAGS += -DREFRESH_RATE=65
+HTTP := chrome
 
-# Bootanimation
-TARGET_BOOTANIMATION_USE_RGB565 := true
-TARGET_BOOTANIMATION_PRELOAD := false
-TARGET_BOOTANIMATION_TEXTURE_CACHE := true
-
-# Misc.
-TARGET_NO_INITLOGO := true
-
-# Touch screen compatibility for ICS/JB
+# Touch screen compatibility for ICS
 BOARD_USE_LEGACY_TOUCHSCREEN := true

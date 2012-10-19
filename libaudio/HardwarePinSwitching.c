@@ -158,7 +158,7 @@ static int switch_pins( int fd, int nPath )
         for( reg = BT_PCM_BCLK_MODE; reg <= BT_PCM_SYNC_MODE; reg++ ) {
 #ifdef DEBUG_CHK
             retval = marimba_read(fd, reg,&value, 1);
-            LOGD("value read is:%d\n",value);
+            ALOGD("value read is:%d\n",value);
 #endif
             retval = marimba_write(fd, reg, &set,1);
             if (retval < 0) {
@@ -168,7 +168,7 @@ static int switch_pins( int fd, int nPath )
         for( reg = FM_I2S_SD_MODE; reg <= FM_I2S_SCK_MODE; reg++ ) {
 #ifdef DEBUG_CHK
             retval = marimba_read(fd, reg,&value, 1);
-            LOGD("value read is:%d\n",value);
+            ALOGD("value read is:%d\n",value);
 #endif
             retval = marimba_write(fd, reg, &unset,1);
             if (retval < 0) {
@@ -182,7 +182,7 @@ static int switch_pins( int fd, int nPath )
         for( reg = FM_I2S_SD_MODE; reg <= FM_I2S_SCK_MODE; reg++ ) {
 #ifdef DEBUG_CHK
             retval = marimba_read(fd, reg,&value, 1);
-            LOGD("value read is:%d\n",value);
+            ALOGD("value read is:%d\n",value);
 #endif
             retval = marimba_write(fd, reg, &set,1);
             if (retval < 0) {
@@ -192,7 +192,7 @@ static int switch_pins( int fd, int nPath )
         for( reg = BT_PCM_BCLK_MODE; reg <= BT_PCM_SYNC_MODE; reg++ ) {
 #ifdef DEBUG_CHK
             retval = marimba_read(fd, reg,&value, 1);
-            LOGD("value read is:%d\n",value);
+            ALOGD("value read is:%d\n",value);
 #endif
             retval = marimba_write(fd, reg, &unset,1);
             if (retval < 0) {
@@ -200,7 +200,7 @@ static int switch_pins( int fd, int nPath )
             }
         }
     }
-    LOGD("switch pin called with : %d\n",nPath);
+    ALOGD("switch pin called with : %d\n",nPath);
     return 0;
 
 err_all:
@@ -220,6 +220,10 @@ FUNCTION:  switch_mode
 */
 extern int switch_mode( int nMode ) {
     int i2cfd = -1, rc= -1 ;
+#ifdef REG_KERNEL_UPDATE
+    //media server doesnt have permissions to update
+    return 0;
+#endif
 #ifdef WITH_QCOM_FM
     i2cfd = open(FM_DEVICE_PATH, O_RDWR);
     if( i2cfd >= 0) {
